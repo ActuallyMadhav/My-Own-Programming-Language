@@ -14,20 +14,19 @@ const std::string TT_RPAREN = "RPAREN";
 /********************* 
     TOKEN
 *********************/
-template <typename T>
 class Token{
     public:
         std::string type;
-        std::optional<T> value;
+        std::string value;
 
-        Token(std::string type, std::optional<T> value){
+        Token(std::string type, std::string value){
             this->type = type;
             this->value = value;
         }
 
         std::string repr(const Token& tk){
-            if(tk.value.has_value()){
-                return tk.type + ": " + std::to_string(*tk.value);
+            if(!tk.value.empty()){
+                return tk.type + ": " + tk.value;
             }
             return tk.type;
         }
@@ -70,7 +69,8 @@ class Lexer{
                     this->advance();
                 }
                 else if(this->currentChar == '+'){
-                    tokens.push_back(Token(TT_PLUS, std::));
+                    tokens.push_back(Token(TT_PLUS, ""));
+                    this->advance();
                 }
             }
 
